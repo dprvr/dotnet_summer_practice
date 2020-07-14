@@ -27,20 +27,20 @@ namespace FilesStorage.DAL.EF.Repositories
 
         public void Add(Account entity, int userId, int storageId)
         {
-            Command(c => 
+            Command(c =>
             {
                 entity.CreationDate = DateTime.Now;
                 entity.UserId = userId;
                 entity.StorageId = storageId;
                 c.Entry(entity).State = System.Data.Entity.EntityState.Added;
-            }, ex => 
-            {
-                throw ex;
             });
         }
 
-        public void Update(Account entity)
+        public void Update(Account updatedEntity)
         {
+            var entity = FindEntityById<Account, int>(updatedEntity.Id, false);
+            entity.HashedPassword = (String.IsNullOrEmpty(updatedEntity.HashedPassword)) ? entity.HashedPassword
+                : updatedEntity.HashedPassword;
             UpdateEntity(entity);
         }
 

@@ -55,7 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EF\FilesStorageDbInitializer.cs" />
-    <Compile Include="EntitiesConfig\FilesAndTagsConfig.cs" />
     <Compile Include="EntitiesConfig\StorageConfig.cs" />
     <Compile Include="EntitiesConfig\StorageTagConfig.cs" />
     <Compile Include="EntitiesConfig\StorageFileConfig.cs" />

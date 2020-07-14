@@ -49,7 +49,7 @@ namespace FilesStorage.PL.Web.Controllers
             {
                 var dto = _mapper.Map<UserSignUpDto, UpdateUserProfileView>(userProfileView);
                 _usersLogic.UpdateUserProfile(dto);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "MyProfile");
             }
             return View(userProfileView);
         }

@@ -24,19 +24,6 @@ namespace FilesStorage.DAL.EF.EntitiesConfig
 
             Property(a => a.HashedPassword)
                 .IsRequired();
-
-            //HasOptional(a => a.UserId)
-            //    .WithOptionalPrincipal(u => u.);
-
-            //HasOptional(a => a.Storage)
-            //    .WithOptionalPrincipal(s => s.Account);
-
-            //HasRequired(a => a.User)
-            //   .WithRequiredDependent(u => u.Account);
-
-            //HasRequired(a => a.Storage)
-            //    .WithRequiredDependent(s => s.Account);
-
         }
     }
 }

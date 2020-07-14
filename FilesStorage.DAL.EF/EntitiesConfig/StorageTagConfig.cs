@@ -15,9 +15,6 @@ namespace FilesStorage.DAL.EF.EntitiesConfig
             Property(t => t.Name)
                 .HasMaxLength(100)
                 .IsRequired();
-
-            //HasRequired(t => t.Storage)
-            //    .WithMany(s => s.StorageTags);
         }
     }
 }

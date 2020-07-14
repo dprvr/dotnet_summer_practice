@@ -71,14 +71,16 @@ namespace FilesStorage.DAL.EF
             {
                 var entity = FindEntityById<TEntity, TKey>(id, false);
                 _context.Entry(entity).State = EntityState.Deleted;
-                _context.SaveChanges();
             });
         }
 
         protected  void UpdateEntity<TEntity>(TEntity entity)
              where TEntity : class
         {
-            Command(c => c.Entry(entity).State = EntityState.Modified);
+            Command(c => 
+            {
+                c.Entry(entity).State = EntityState.Modified;
+            });
         }
 
         protected  void AddRange<TEntity>(params TEntity[] entities)

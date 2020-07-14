@@ -86,7 +86,10 @@ namespace FilesStorage.PL.Web.Controllers
             if (ModelState.IsValid)
             {                                
                 var dto = _mapper.Map<FileDto, AddFileView>(createFileView);
-                dto.Tags = selectedIds.Select(id => new TagDto { Id = id }).ToList();                
+                if(selectedIds != null && selectedIds.Any()) 
+                {
+                    dto.Tags = selectedIds.Select(id => new TagDto { Id = id }).ToList();
+                }                                
                 _filesLogic.Add(dto, User.Identity.Name);
                 return RedirectToAction(defaultAction, defaultController);
             }

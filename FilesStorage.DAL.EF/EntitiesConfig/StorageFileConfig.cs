@@ -25,8 +25,6 @@ namespace FilesStorage.DAL.EF.EntitiesConfig
             Property(f => f.FileType)
                 .IsRequired();
 
-            //HasRequired(f => f.Storage)
-            //    .WithMany(s => s.StorageFiles);
         }
     }
 }

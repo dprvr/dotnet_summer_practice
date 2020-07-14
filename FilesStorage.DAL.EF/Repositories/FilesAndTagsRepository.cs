@@ -14,7 +14,8 @@ namespace FilesStorage.DAL.EF.Repositories
 {
     public class FilesAndTagsRepository : BaseRepository, IFilesAndTagsRepository
     {
-        public FilesAndTagsRepository(FilesStorageContext context, Action<Exception> commandFailure) : base(context, commandFailure)
+        public FilesAndTagsRepository(FilesStorageContext context,
+            Action<Exception> commandFailure) : base(context, commandFailure)
         {
 
         }
@@ -22,29 +23,21 @@ namespace FilesStorage.DAL.EF.Repositories
         public IEnumerable<StorageTag> GetFileTags(int fileId)
         {
             return FindEntityById<StorageFile, int>(fileId).Tags.ToList();
-            //return Query<FileAndTag>().Where(m => m.File.Id == fileId).Select(m => m.Tag).ToList();
         }
 
         public IEnumerable<StorageFile> GetTagFiles(int tagId)
         {
-            return Query<FileAndTag>().Where(m => m.Tag.Id == tagId).Select(m => m.File).ToList();
+            return LoadWithProperties<StorageTag>(t => t.Files).FirstOrDefault(t => t.Id == tagId).Files.ToList();
         }
 
         public void AddTagsToFile(int fileId, params int[] tagsIds)
         {
             Command(c =>
             {
-                var set = c.Set<FileAndTag>();
-                var file = new StorageFile { Id = fileId };
-                var tag = new StorageTag();
+                var file = FindEntityById<StorageFile, int>(fileId, false);
                 foreach(var tagId in tagsIds)
                 {
-                    tag.Id = tagId;
-                    set.Add(new FileAndTag
-                    {
-                        File = file,
-                        Tag = tag,
-                    });
+                    file.Tags.Add(new StorageTag { Id = tagId });
                 }
             });
         }
@@ -53,9 +46,12 @@ namespace FilesStorage.DAL.EF.Repositories
         {
             Command(c =>
             {
-                var set = c.Set<FileAndTag>();
-                var found = set.Where(r => r.File.Id == fileId && tagsIds.Contains(r.Tag.Id));
-                set.RemoveRange(found);
+                var file = FindEntityById<StorageFile, int>(fileId, false);
+                var deletingTags = file.Tags.Where(t => tagsIds.Contains(t.Id)).ToList();
+                foreach(var tag in deletingTags)
+                {
+                    file.Tags.Remove(tag);
+                }
             });
         }
 
@@ -73,8 +69,13 @@ namespace FilesStorage.DAL.EF.Repositories
 
                 if (!String.IsNullOrEmpty(searchDto.FileType))
                 {
-                    var getFileTypeAsString = Call(Property(enter, "FileType"), typeof(FileType).GetMethod("ToString"));
-                    var CheckFileType = Equal(getFileTypeAsString, Constant(searchDto.FileType));
+                    //exception enum.toStr not supported by expressions 
+                    //var getFileTypeAsString = Call(Property(enter, "FileType"),
+                    //    typeof(FileType).GetMethod("ToString", System.Type.EmptyTypes));
+
+                    var necessaryType = Constant((FileType)Enum.Parse(typeof(FileType), searchDto.FileType, true));
+
+                    var CheckFileType = Equal(Property(enter, "FileType"), necessaryType);
 
                     searchQuery = AndAlso(searchQuery, CheckFileType);
                 }

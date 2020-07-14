@@ -6,7 +6,7 @@ namespace FilesStorage.BLL
 {
     public class SearchQueryParser : ISearchQueryParser
     {
-        private static string str = "n:filename t:work t:fun t:study o:desc";
+        private static string str = "n:filename t:pdf";
         
         private char[] queryOptionsSeps = { ' ', ',' };
         private char[] commandValueSep = { ':' };

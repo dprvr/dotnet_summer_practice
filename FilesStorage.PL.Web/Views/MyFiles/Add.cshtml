@@ -36,15 +36,6 @@
         </div>
     </div>
 
-
-    @*<div class="form-group">
-        @Html.LabelFor(model => model.FileType, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(m => m.FileType, Enum.GetNames(typeof(FilesStorage.Entities.Enums.FileType)).Select(e => new SelectListItem { Text = e }))
-            @Html.ValidationMessageFor(model => model.FileType, "", new { @class = "text-danger" })
-        </div>
-    </div>*@
-
 <div class="form-group">
     <div class="col-md-10">
 
@@ -52,12 +43,6 @@
         {
             <input type="checkbox" name="selectedIds" value="@tag.Id"> @tag.Name <br />
         }
-
-        @*@foreach (FilesStorage.Entities.ViewModels.TagsView tag in ViewBag.UserTags)
-            {
-            <input type="checkbox" name="selectedCourses" value="@tag.Id"
-                   @(Model.SelectedTagsIds.Any(t => t == tag.Id) ? "checked=\"checked\"" : ""))/> @tag.Name <br />
-            }*@
 
     </div>
 </div>

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-
 using FilesStorage.BLL.Interfaces;
 using FilesStorage.DAL.Interfaces;
 using FilesStorage.Entities.DTOs;
@@ -48,7 +46,8 @@ namespace FilesStorage.BLL
 
             var found = _accountsRepository.FindById(updatingUserDto.Id);
             user.Id = found.UserId;
-            if (updatingUserDto.Password != null && updatingUserDto.Password.Any())
+
+            if (!String.IsNullOrEmpty(updatingUserDto.Password))
             {
                 account.HashedPassword = _hasher.Hash(updatingUserDto.Password);
             }
@@ -76,8 +75,8 @@ namespace FilesStorage.BLL
 
         public UserDto FindUserByLogin(string login)
         {
-            var found = _accountsRepository.FindByLogin(login);
-            var foundUser = _usersRepository.FindById(found.UserId);
+            var foundAccount = _accountsRepository.FindByLogin(login);
+            var foundUser = _usersRepository.FindById(foundAccount.UserId);
             var fullDto = new UserDto
             {
                 FirstName = foundUser.FirstName,
@@ -85,8 +84,8 @@ namespace FilesStorage.BLL
                 Birthday = foundUser.Birthday,
                 Email = foundUser.Email,
                 Gender = foundUser.Gender,
-                Login = found.Login,
-                Id = found.Id
+                Login = foundAccount.Login,
+                Id = foundAccount.Id
             };
             return fullDto;
         }

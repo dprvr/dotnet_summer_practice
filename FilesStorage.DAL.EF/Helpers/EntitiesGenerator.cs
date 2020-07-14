@@ -58,42 +58,42 @@ namespace FilesStorage.DAL.EF.Helpers
         }
 
 
-        public IEnumerable<FileAndTag> CreateTagsFilesRelation(IList<StorageFile> files, IList<StorageTag> tags)
-        {
-            return new List<FileAndTag>()
-            {
-                new FileAndTag
-                {
-                    File = files[1],
-                    Tag = tags[3],
-                },
-                new FileAndTag
-                {
-                    File = files[3],
-                    Tag = tags[3],
-                },
-                new FileAndTag
-                {
-                    File = files[1],
-                    Tag = tags[2],
-                },
-                new FileAndTag
-                {
-                    File = files[1],
-                    Tag = tags[3],
-                },
-                new FileAndTag
-                {
-                    File = files[3],
-                    Tag = tags[2],
-                },
-                new FileAndTag
-                {
-                    File = files[2],
-                    Tag = tags[1],
-                },
-            };
-        }
+        //public IEnumerable<FileAndTag> CreateTagsFilesRelation(IList<StorageFile> files, IList<StorageTag> tags)
+        //{
+        //    return new List<FileAndTag>()
+        //    {
+        //        new FileAndTag
+        //        {
+        //            File = files[1],
+        //            Tag = tags[3],
+        //        },
+        //        new FileAndTag
+        //        {
+        //            File = files[3],
+        //            Tag = tags[3],
+        //        },
+        //        new FileAndTag
+        //        {
+        //            File = files[1],
+        //            Tag = tags[2],
+        //        },
+        //        new FileAndTag
+        //        {
+        //            File = files[1],
+        //            Tag = tags[3],
+        //        },
+        //        new FileAndTag
+        //        {
+        //            File = files[3],
+        //            Tag = tags[2],
+        //        },
+        //        new FileAndTag
+        //        {
+        //            File = files[2],
+        //            Tag = tags[1],
+        //        },
+        //    };
+        //}
 
         public IEnumerable<StorageTag> CreateTags(Storage storage)
         {
