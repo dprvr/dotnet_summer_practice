@@ -55,9 +55,18 @@ namespace FilesStorage.PL.Web.Controllers
                     LoginName = User.Identity.Name,
                     SearchString = filesView.SearchString
                 };
-                var found = _filesLogic.SearchUserFiles(searchQuery);
-                var foundView = _mapper.Map<IEnumerable<FileView>, IEnumerable<FileDto>>(found);
-                filesView.filesViews = foundView;
+                try
+                {
+                    var found = _filesLogic.SearchUserFiles(searchQuery);
+                    var foundView = _mapper.Map<IEnumerable<FileView>, IEnumerable<FileDto>>(found);
+                    filesView.filesViews = foundView;
+                }
+                catch (ArgumentException)
+                {
+                    ViewBag.ErrorMessage = "The search query format is incorect";
+                    filesView.filesViews = new List<FileView>();
+                }                
+                
             }
             else
             {

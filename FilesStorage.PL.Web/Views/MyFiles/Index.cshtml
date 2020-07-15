@@ -16,6 +16,15 @@
         @Html.TextBoxFor(m => m.SearchString, "")
         <input type="submit" value="Search" />
     </div>
+
+    if(ViewBag.ErrorMessage != null)
+    {
+        <script type="text/javascript">
+    window.onload = function () {
+        this.alert("@ViewBag.ErrorMessage");
+    };
+    </script>
+    }
 }
 
 <table class="table">
