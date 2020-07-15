@@ -14,7 +14,6 @@ namespace FilesStorage.DAL.EF.Helpers
     public class EntitiesGenerator
     {
         
-
         public EntitiesGenerator()
         {
             

@@ -20,8 +20,6 @@ namespace FilesStorage.Entities.Mappers.Profiles
             CreateMap<FileDto, FileView>()
                 .ForMember(f => f.FullName, opt => 
                     opt.MapFrom(d => d.Name + "." + Enum.GetName(typeof(FileType),d.FileType)));
-            //CreateMap<FileView, FileDto>()
-            //    .IncludeMembers(f => f.Id);
 
             CreateMap<FileDto, CreateEditFileView>();
             CreateMap<CreateEditFileView, FileDto>();
@@ -34,11 +32,7 @@ namespace FilesStorage.Entities.Mappers.Profiles
             CreateMap<UserLoginView, UserSignInDto>();
             CreateMap<UserSignInDto, UserLoginView>();
 
-            //Users
-
-            
-
-              CreateMap<CreateUserView, UserSignUpDto>();
+            CreateMap<CreateUserView, UserSignUpDto>();
 
             CreateMap<CreateUserView, UserDto>();
             CreateMap<UserDto, CreateUserView>();

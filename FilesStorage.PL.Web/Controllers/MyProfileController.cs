@@ -1,4 +1,6 @@
 ﻿using System.Web.Mvc;
+using System.Web.Security;
+
 using FilesStorage.BLL.Interfaces;
 using FilesStorage.Entities.DTOs;
 using FilesStorage.Entities.Mappers;
@@ -49,6 +51,7 @@ namespace FilesStorage.PL.Web.Controllers
             {
                 var dto = _mapper.Map<UserSignUpDto, UpdateUserProfileView>(userProfileView);
                 _usersLogic.UpdateUserProfile(dto);
+                FormsAuthentication.SetAuthCookie(dto.Login, false);
                 return RedirectToAction("Index", "MyProfile");
             }
             return View(userProfileView);

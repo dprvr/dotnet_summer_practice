@@ -10,7 +10,8 @@ namespace FilesStorage.DAL.EF.Repositories
 {
     public class FilesRepository : BaseRepository, IFilesRepository
     {
-        public FilesRepository(FilesStorageContext context, Action<Exception> commandFailure) : base(context, commandFailure)
+        public FilesRepository(FilesStorageContext context, Action<Exception> commandFailure) 
+            : base(context, commandFailure)
         {
         }
 

@@ -83,6 +83,34 @@ namespace FilesStorage.DAL.EF
             });
         }
 
+        protected void CustomEntityUpdate<TEntity, TKey>(TEntity editedEntity, TKey id, 
+            [Optional] params Expression<Func<TEntity, object>>[] propsToUpdate)
+            where TEntity : class
+        {
+            Command(c =>
+            {
+                var attachedEntity = FindEntityById<TEntity, TKey>(id, false);
+                var entityEntry = c.Entry(attachedEntity);
+                if(propsToUpdate == null || !propsToUpdate.Any())
+                {
+                    UpdateEntity(editedEntity);
+                }
+                else
+                {
+                    foreach (var prop in propsToUpdate)
+                    {
+                        if (prop != null)
+                        {
+                            var propEntry = entityEntry.Property(prop);
+                            var newValue = typeof(TEntity).GetProperty(propEntry.Name).GetValue(editedEntity);
+                            propEntry.CurrentValue = newValue;
+                            propEntry.IsModified = true;
+                        }
+                    }                        
+                }                
+            });
+        }
+
         protected  void AddRange<TEntity>(params TEntity[] entities)
              where TEntity : class
         {            

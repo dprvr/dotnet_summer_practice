@@ -41,7 +41,7 @@ namespace FilesStorage.PL.Web.Controllers
             {
                 var dto = _mapper.Map<TagDto, TagsView>(view);
                 _tagsLogic.AddTag(dto, User.Identity.Name);
-                RedirectToAction("Index", "Tags");
+                return RedirectToAction("Index", "Tags");
             }
             return View(view);
         }
@@ -75,7 +75,7 @@ namespace FilesStorage.PL.Web.Controllers
             {
                 var dto = _mapper.Map<TagDto, TagsView>(view);
                 _tagsLogic.EditTag(dto);
-                RedirectToAction("Index, Tags");
+                return RedirectToAction("Index", "Tags");
             }
             return View(view);
         }

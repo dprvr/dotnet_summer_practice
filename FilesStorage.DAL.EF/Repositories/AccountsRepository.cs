@@ -38,10 +38,15 @@ namespace FilesStorage.DAL.EF.Repositories
 
         public void Update(Account updatedEntity)
         {
-            var entity = FindEntityById<Account, int>(updatedEntity.Id, false);
-            entity.HashedPassword = (String.IsNullOrEmpty(updatedEntity.HashedPassword)) ? entity.HashedPassword
-                : updatedEntity.HashedPassword;
-            UpdateEntity(entity);
+            //CustomEntityUpdate(updatedEntity, updatedEntity.Id, a => a.Login, a => a.HashedPassword);        
+            if (!String.IsNullOrEmpty(updatedEntity.HashedPassword))
+            {
+                CustomEntityUpdate(updatedEntity, updatedEntity.Id, a => a.Login, a => a.HashedPassword);
+            }
+            else
+            {
+                CustomEntityUpdate(updatedEntity, updatedEntity.Id, a => a.Login);
+            }
         }
 
         public void Delete(int id)
