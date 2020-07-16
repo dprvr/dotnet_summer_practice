@@ -68,8 +68,9 @@
     <Compile Include="Mappers\Profiles\PLProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AddFileView.cs" />
-    <Compile Include="ViewModels\CreateEditFileView.cs" />
+    <Compile Include="ViewModels\EditFileView.cs" />
     <Compile Include="ViewModels\CreateUpdateModels\CreateUserView.cs" />
+    <Compile Include="ViewModels\FileFullView.cs" />
     <Compile Include="ViewModels\FilesViewModel.cs" />
     <Compile Include="ViewModels\FileView.cs" />
     <Compile Include="ViewModels\CreateUpdateModels\UpdateUserProfileView.cs" />

@@ -38,6 +38,11 @@ namespace FilesStorage.DI.Modules
                 .RegisterType<SearchQueryParser>()
                 .As<ISearchQueryParser>()
                 .SingleInstance();
+
+            builder
+                .RegisterType<Conventions>()
+                .As<IConventions>()
+                .SingleInstance();
         }
     }
 }

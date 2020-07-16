@@ -30,7 +30,8 @@ namespace FilesStorage.DAL.EF.Repositories
 
         public void Update(User entity)
         {
-            UpdateEntity<User>(entity);
+            CustomEntityUpdate(entity, entity.Id,
+                u => u.FirstName, u => u.LastName, u => u.Email, u => u.Birthday, u => u.Gender);
         }
 
         public User FindById(int id)

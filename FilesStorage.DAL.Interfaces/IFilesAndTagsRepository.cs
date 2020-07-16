@@ -9,8 +9,10 @@ namespace FilesStorage.DAL.Interfaces
     {
         IEnumerable<StorageTag> GetFileTags(int fileId);
         IEnumerable<StorageFile> GetTagFiles(int tagId);
+
         void AddTagsToFile(int fileId, params int[] tagsIds);
         void DeleteTagsFromFile(int fileId, params int[] tagsIds);
+        void InsertOrUpdateFileTags(int fileId, params int[] newFileTagsIds);
 
         IEnumerable<StorageFile> Search(SearchOptionsDto searchDto);
     }

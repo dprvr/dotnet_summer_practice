@@ -27,7 +27,7 @@ namespace FilesStorage.DAL.EF
         {
             try
             {
-                action.Invoke(_context);
+                action?.Invoke(_context);
                 _context.SaveChanges();
             }
             catch (Exception exception)
@@ -80,7 +80,7 @@ namespace FilesStorage.DAL.EF
             Command(c => 
             {
                 c.Entry(entity).State = EntityState.Modified;
-            });
+            }, ex => throw ex);
         }
 
         protected void CustomEntityUpdate<TEntity, TKey>(TEntity editedEntity, TKey id, 

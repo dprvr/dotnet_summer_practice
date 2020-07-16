@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using FilesStorage.DAL.Interfaces;
 using FilesStorage.Entities.DTOs;
 using FilesStorage.Entities.Entities;
-using FilesStorage.Entities.Enums;
 
 using static System.Linq.Expressions.Expression;
 
@@ -52,6 +51,16 @@ namespace FilesStorage.DAL.EF.Repositories
                 {
                     file.Tags.Remove(tag);
                 }
+            });
+        }
+
+        public void InsertOrUpdateFileTags(int fileId, params int[] newFileTagsIds)
+        {
+            Command(c =>
+            {
+                var file = Query<StorageFile>(false).Include("Tags").FirstOrDefault(f => f.Id == fileId);                
+                var attachedNewTags = Query<StorageTag>(false).Where(t => newFileTagsIds.Contains(t.Id));
+                file.Tags = attachedNewTags.ToList();
             });
         }
 

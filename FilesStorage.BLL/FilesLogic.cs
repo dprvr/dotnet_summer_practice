@@ -13,34 +13,36 @@ namespace FilesStorage.BLL
     public class FilesLogic : IFilesLogic
     {
         private readonly IFilesRepository _filesRepository;
-        private readonly IAccountsRepository _accountsRepository;
         private readonly IFilesAndTagsRepository _filesAndTagsRepo;
         private readonly ISearchQueryParser _parser;
         private readonly IBLMapper _mapper;
+        private readonly IConventions _conventions;
 
-        public FilesLogic(IFilesRepository filesRepository, IAccountsRepository accountsRepository,
-            IBLMapper mapper, IFilesAndTagsRepository filesAndTagsRepo, ISearchQueryParser parser)
+        public FilesLogic(IFilesRepository filesRepository, IBLMapper mapper, IFilesAndTagsRepository filesAndTagsRepo,
+            ISearchQueryParser parser, IConventions conventions)
         {
             _filesRepository = filesRepository;
-            _accountsRepository = accountsRepository;
             _mapper = mapper;
             _filesAndTagsRepo = filesAndTagsRepo;
             _parser = parser;
+            _conventions = conventions;
         }
 
-        public FileDto FindFileById(int fileId)
+        public FileWithTagsDto FindFileById(int fileId)
         {
             var founded = _filesRepository.GetById(fileId);
             var tags = _filesAndTagsRepo.GetFileTags(fileId);
             var tagsDtos = _mapper.Map<IEnumerable<TagDto>, IEnumerable<StorageTag>>(tags);
-            var dto = _mapper.Map<FileDto, StorageFile>(founded);
+            var dto = _mapper.Map<FileWithTagsDto, StorageFile>(founded);
             dto.Tags = tagsDtos.ToList();
             return dto;
         }
 
-        public void EditFile(FileDto fileDto)
+        public void EditFile(FileWithTagsDto fileDto)
         {
-            _filesRepository.Update(_mapper.Map<StorageFile, FileDto>(fileDto));
+            _filesRepository.Update(_mapper.Map<StorageFile, FileWithTagsDto>(fileDto));
+            if(fileDto.Tags != null && fileDto.Tags.Any())
+                _filesAndTagsRepo.InsertOrUpdateFileTags(fileDto.Id, fileDto.Tags.Select(t => t.Id).ToArray());
         }
 
         public void DeleteFile(int fileId)
@@ -51,7 +53,7 @@ namespace FilesStorage.BLL
         public IEnumerable<FileDto> SearchUserFiles(FilesSearchDto searchDto)
         {
             var searchOpt = _parser.ParseQuery(searchDto);
-            searchOpt.StorageId = _accountsRepository.FindByLogin(searchDto.LoginName).StorageId;
+            searchOpt.StorageId =_conventions.GetStorageIdByUserLogin(searchDto.LoginName);
             var found = _filesAndTagsRepo.Search(searchOpt);
             var mapped = _mapper.Map<IEnumerable<FileDto>, IEnumerable<StorageFile>>(found);
             return mapped;
@@ -59,31 +61,31 @@ namespace FilesStorage.BLL
 
         public IEnumerable<FileDto> GetAllUserFiles(string userLogin)
         {
-            var account = _accountsRepository.FindByLogin(userLogin);
-            var files = _filesRepository.GetAllFilesFromStorage(account.StorageId);
+            var files = _filesRepository.GetAllFilesFromStorage(_conventions.GetStorageIdByUserLogin(userLogin));
             return _mapper.Map<IEnumerable<FileDto>, IEnumerable<StorageFile>>(files);
         }
 
-        public void Add(FileDto fileDto, string login)
+        public void Add(FileWithTagsDto fileDto, string login)
         {
-            var account = _accountsRepository.FindByLogin(login);
-            var entity = _mapper.Map<StorageFile, FileDto>(fileDto);
-            _filesRepository.Add(entity, account.StorageId);
+            var entity = _mapper.Map<StorageFile, FileWithTagsDto>(fileDto);
+            var addedFile = _filesRepository.Add(entity,_conventions.GetStorageIdByUserLogin(login));
+            if(fileDto.Tags != null && fileDto.Tags.Any())
+                _filesAndTagsRepo.InsertOrUpdateFileTags(addedFile.Id, fileDto.Tags.Select(t => t.Id).ToArray());
         }
 
-        public IEnumerable<FileDto> GetAllUserFilesWithTags(string userLogin)
+        public IEnumerable<FileWithTagsDto> GetAllUserFilesWithTags(string userLogin)
         {
-            var account = _accountsRepository.FindByLogin(userLogin);
-            var files = _filesRepository.GetAllFilesFromStorage(account.StorageId);
-            var dtos = _mapper.Map<IEnumerable<FileDto>, IEnumerable<StorageFile>>(files);
-            var dtosWithTags = dtos.Select(f =>
-            {
-                var tags = _filesAndTagsRepo.GetFileTags(f.Id);
-                var tagDtos = _mapper.Map<IEnumerable<TagDto>, IEnumerable<StorageTag>>(tags);
-                f.Tags = tagDtos.ToList();
-                return f;
-            });
-            return dtosWithTags;
+            //var files = _filesRepository.GetAllFilesFromStorage(_conventions.GetStorageIdByUserLogin(userLogin));
+            //var dtos = _mapper.Map<IEnumerable<FileDto>, IEnumerable<StorageFile>>(files);
+            //var dtosWithTags = dtos.Select(f =>
+            //{
+            //    var tags = _filesAndTagsRepo.GetFileTags(f.Id);
+            //    var tagDtos = _mapper.Map<IEnumerable<TagDto>, IEnumerable<StorageTag>>(tags);
+            //    f.Tags = tagDtos.ToList();
+            //    return f;
+            //});
+            //return dtosWithTags;
+            throw new NotImplementedException();
         }
     }
 }

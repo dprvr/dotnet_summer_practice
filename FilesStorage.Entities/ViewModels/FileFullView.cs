@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 using FilesStorage.Entities.Enums;
 
-namespace FilesStorage.Entities.DTOs
+namespace FilesStorage.Entities.ViewModels
 {
-    public class FileDto
+    public class FileFullView
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public FileType FileType { get; set; }
+
+        public IEnumerable<TagsView> Tags { get; set; }
     }
 }

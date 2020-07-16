@@ -4,7 +4,7 @@ using FilesStorage.Entities.Enums;
 
 namespace FilesStorage.Entities.ViewModels
 {
-    public class CreateEditFileView
+    public class EditFileView
     {
         [ScaffoldColumn(false)]
         public int Id { get; set; }
@@ -20,6 +20,6 @@ namespace FilesStorage.Entities.ViewModels
         [EnumDataType(typeof(FileType))]
         public FileType FileType { get; set; }
 
-        public List<TagsView> Tags { get; set; }
+        public IEnumerable<int> Tags { get; set; }
     }
 }

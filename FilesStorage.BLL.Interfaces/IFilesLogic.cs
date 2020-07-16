@@ -6,14 +6,14 @@ namespace FilesStorage.BLL.Interfaces
 {
     public interface IFilesLogic
     {        
-        void Add(FileDto fileDto, string login);
-        void EditFile(FileDto fileDto);
+        void Add(FileWithTagsDto fileDto, string login);
+        void EditFile(FileWithTagsDto fileDto);
         void DeleteFile(int fileId);
 
-        FileDto FindFileById(int fileId);
+        FileWithTagsDto FindFileById(int fileId);
 
         IEnumerable<FileDto> GetAllUserFiles(string userLogin);
-        IEnumerable<FileDto> GetAllUserFilesWithTags(string userLogin);
+        IEnumerable<FileWithTagsDto> GetAllUserFilesWithTags(string userLogin);
         IEnumerable<FileDto> SearchUserFiles(FilesSearchDto searchDto);
     }
 }

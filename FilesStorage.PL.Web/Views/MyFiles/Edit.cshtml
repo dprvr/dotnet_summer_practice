@@ -1,4 +1,4 @@
-﻿@model FilesStorage.Entities.ViewModels.CreateEditFileView
+﻿@model FilesStorage.Entities.ViewModels.EditFileView
 
 @{
     ViewBag.Title = "Edit";
@@ -37,13 +37,14 @@
         </div>
     </div>
 
-
     <div class="form-group">
         @Html.LabelFor(model => model.Tags, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
+
             @foreach (FilesStorage.Entities.ViewModels.TagsView tag in ViewBag.UserTags)
             {
-                <input type="checkbox" name="selectedIds" value="@tag.Id"> @tag.Name <br />
+                <input type="checkbox" name="selectedTags" value="@tag.Id"
+                        @(Model.Tags.Any(t => t == tag.Id) ? "checked=\" checked\"" : "")/> @tag.Name <br />
             }
 
         </div>

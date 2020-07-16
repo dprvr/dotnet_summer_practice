@@ -94,7 +94,7 @@ namespace FilesStorage.PL.Web.Controllers
         {
             if (ModelState.IsValid)
             {                                
-                var dto = _mapper.Map<FileDto, AddFileView>(createFileView);
+                var dto = _mapper.Map<FileWithTagsDto, AddFileView>(createFileView);
                 if(selectedIds != null && selectedIds.Any()) 
                 {
                     dto.Tags = selectedIds.Select(id => new TagDto { Id = id }).ToList();
@@ -125,17 +125,19 @@ namespace FilesStorage.PL.Web.Controllers
                 return HttpNotFound();
             }
             var file = _filesLogic.FindFileById(id.Value);
-            var fileView = _mapper.Map<CreateEditFileView, FileDto>(file);
+            var fileView = _mapper.Map<EditFileView, FileWithTagsDto>(file);
+            fileView.Tags = file.Tags.Select(t => t.Id);
             ViewBag.UserTags = GetUserTags();
             return View(fileView);
         }
 
         [HttpPost]
-        public ActionResult Edit(CreateEditFileView editFileView)
+        public ActionResult Edit(EditFileView editFileView, int[] selectedTags)
         {
             if (ModelState.IsValid)
             {
-                var dto = _mapper.Map<FileDto, CreateEditFileView>(editFileView);
+                var dto = _mapper.Map<FileWithTagsDto, EditFileView>(editFileView);
+                dto.Tags = selectedTags.Select(id => new TagDto { Id = id });
                 _filesLogic.EditFile(dto);
                 return RedirectToAction(defaultAction, defaultController);
             }
@@ -149,7 +151,7 @@ namespace FilesStorage.PL.Web.Controllers
             if (id.HasValue)
             {
                 var file = _filesLogic.FindFileById(id.Value);
-                var fileView = _mapper.Map<CreateEditFileView, FileDto>(file);
+                var fileView = _mapper.Map<FileFullView, FileWithTagsDto>(file);
                 return View(fileView);
             }
             return HttpNotFound();

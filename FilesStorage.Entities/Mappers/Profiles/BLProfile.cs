@@ -1,5 +1,4 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 
 using FilesStorage.Entities.DTOs;
 using FilesStorage.Entities.Entities;
@@ -11,10 +10,15 @@ namespace FilesStorage.Entities.Mappers.Profiles
         public BLProfile()
         {
             //Files
-            CreateMap<FileDto, StorageFile>()
+            CreateMap<FileDto, StorageFile>();
+
+            CreateMap<FileWithTagsDto, StorageFile>()
                 .ForMember(f => f.Tags, opt => opt.Ignore());
+
             CreateMap<StorageFile, FileDto>()
                 .ForMember(d => d.Id, opt => opt.MapFrom(f => f.Id));
+
+            CreateMap<StorageFile, FileWithTagsDto>();
 
             //Tags
             CreateMap<StorageTag, TagDto>();

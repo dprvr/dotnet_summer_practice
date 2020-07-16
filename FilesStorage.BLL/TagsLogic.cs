@@ -10,14 +10,14 @@ namespace FilesStorage.BLL
     public class TagsLogic : ITagsLogic
     {
         private readonly ITagsRepository _tagsRepository;
-        private readonly IAccountsRepository _accountsRepository;
+        private readonly IConventions _conventions;
         private readonly IBLMapper _mapper;
 
-        public TagsLogic(ITagsRepository tagsRepository, IAccountsRepository accountsRepository,
+        public TagsLogic(ITagsRepository tagsRepository, IConventions conventions,
             IBLMapper mapper)
         {
             _tagsRepository = tagsRepository;
-            _accountsRepository = accountsRepository;
+            _conventions = conventions;
             _mapper = mapper;
         }
 
@@ -39,15 +39,14 @@ namespace FilesStorage.BLL
 
         public IEnumerable<TagDto> GetAllUserTags(string UserLogin)
         {
-            var found = _tagsRepository.GetAll(_accountsRepository.FindByLogin(UserLogin).StorageId);
+            var found = _tagsRepository.GetAll(_conventions.GetStorageIdByUserLogin(UserLogin));
             return _mapper.Map<IEnumerable<TagDto>, IEnumerable<StorageTag>>(found);
         }
 
         public void AddTag(TagDto tag, string login)
         {
-            var account = _accountsRepository.FindByLogin(login);
             var entity = _mapper.Map<StorageTag, TagDto>(tag);
-            _tagsRepository.Add(entity, account.StorageId);
+            _tagsRepository.Add(entity, _conventions.GetStorageIdByUserLogin(login));
         }
     }
 }

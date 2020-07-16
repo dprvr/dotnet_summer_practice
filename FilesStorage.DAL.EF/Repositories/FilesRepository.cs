@@ -15,14 +15,16 @@ namespace FilesStorage.DAL.EF.Repositories
         {
         }
 
-        public void Add(StorageFile entity, int storageId)
-        {            
+        public StorageFile Add(StorageFile entity, int storageId)
+        {
+            StorageFile addedFile = null;
             Command(c =>
             {
                 var storage = Query<Storage>(false).FirstOrDefault(s => s.Id == storageId);
                 entity.Storage = storage;
-                c.Entry(entity).State = EntityState.Added;
+                addedFile = c.Set<StorageFile>().Add(entity);
             });
+            return addedFile;
         }
 
         public void Delete(int id)

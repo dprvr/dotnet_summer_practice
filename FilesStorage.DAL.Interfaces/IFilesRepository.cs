@@ -5,7 +5,7 @@ namespace FilesStorage.DAL.Interfaces
 {
     public interface IFilesRepository
     {
-        void Add(StorageFile entity, int storageId);
+        StorageFile Add(StorageFile entity, int storageId);
         void Delete(int id);
         void Update(StorageFile entity);
 

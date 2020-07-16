@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using AutoMapper;
 using FilesStorage.Entities.DTOs;
@@ -15,18 +16,19 @@ namespace FilesStorage.Entities.Mappers.Profiles
             CreateMap<TagsView, TagDto>();
             CreateMap<TagDto, TagsView>();
 
-
             //Files
             CreateMap<FileDto, FileView>()
                 .ForMember(f => f.FullName, opt => 
                     opt.MapFrom(d => d.Name + "." + Enum.GetName(typeof(FileType),d.FileType)));
 
-            CreateMap<FileDto, CreateEditFileView>();
-            CreateMap<CreateEditFileView, FileDto>();
+            CreateMap<AddFileView, FileWithTagsDto>();
 
-            CreateMap<AddFileView, FileDto>();
+            CreateMap<FileWithTagsDto, EditFileView>()
+                .ForMember(v => v.Tags, opt => opt.MapFrom(d => d.Tags.Select(t => t.Id)));
+            CreateMap<EditFileView, FileWithTagsDto>()
+                .ForMember(d => d.Tags, opt => opt.MapFrom(v => v.Tags.Select(id => new TagDto { Id = id})));
 
-
+            CreateMap<FileWithTagsDto, FileFullView>();
             //Login
 
             CreateMap<UserLoginView, UserSignInDto>();

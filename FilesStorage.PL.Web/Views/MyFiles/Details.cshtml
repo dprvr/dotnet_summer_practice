@@ -1,4 +1,4 @@
-﻿@model FilesStorage.Entities.ViewModels.CreateEditFileView
+﻿@model FilesStorage.Entities.ViewModels.FileFullView
 
 @{
     ViewBag.Title = "Details";
@@ -48,6 +48,5 @@
 
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back", "Index")
 </p>

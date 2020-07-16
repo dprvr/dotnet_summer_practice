@@ -31,7 +31,7 @@ namespace FilesStorage.DAL.EF.Repositories
 
         public void Update(StorageTag entity)
         {
-            UpdateEntity(entity);
+            CustomEntityUpdate(entity, entity.Id, t => t.Name);
         }
 
         public StorageTag FindById(int id)
