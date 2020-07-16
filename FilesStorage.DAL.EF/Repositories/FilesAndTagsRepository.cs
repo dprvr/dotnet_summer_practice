@@ -67,16 +67,14 @@ namespace FilesStorage.DAL.EF.Repositories
 
                 var searchQuery = IsInTheUserStorage;
 
-                if (!String.IsNullOrEmpty(searchDto.FileType))
+                if (searchDto.FileType.HasValue)
                 {
                     //exception enum.toStr not supported by expressions 
                     //var getFileTypeAsString = Call(Property(enter, "FileType"),
                     //    typeof(FileType).GetMethod("ToString", System.Type.EmptyTypes));
 
-                    var necessaryType = Constant((FileType)Enum.Parse(typeof(FileType), searchDto.FileType, true));
-
+                    var necessaryType = Constant(searchDto.FileType.Value);
                     var CheckFileType = Equal(Property(enter, "FileType"), necessaryType);
-
                     searchQuery = AndAlso(searchQuery, CheckFileType);
                 }
 
@@ -85,7 +83,6 @@ namespace FilesStorage.DAL.EF.Repositories
                     var IsFileNameContainsStr = Call(Property(enter, "Name"),
                     typeof(string).GetMethod("Contains"), Constant(searchDto.FileName));
                     var CheckFileName = Equal(IsFileNameContainsStr, Constant(true));
-
                     searchQuery = AndAlso(searchQuery, CheckFileName);
                 }
 

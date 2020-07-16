@@ -32,7 +32,7 @@ namespace FilesStorage.DAL.EF.Repositories
 
         public void Update(StorageFile entity)
         {
-            UpdateEntity<StorageFile>(entity);
+            CustomEntityUpdate(entity, entity.Id, f => f.Name, f => f.Description, f => f.FileType);
         }
 
         public StorageFile GetById(int id)

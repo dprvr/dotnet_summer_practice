@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+using FilesStorage.Entities.Enums;
+
 namespace FilesStorage.Entities.ViewModels
 {
     public class FilesViewModel

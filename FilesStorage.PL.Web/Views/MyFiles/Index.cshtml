@@ -13,7 +13,7 @@
 @using (Html.BeginForm("Index", "MyFiles", FormMethod.Post))
 {
     <div>
-        @Html.TextBoxFor(m => m.SearchString, "")
+        @Html.TextBoxFor(m => m.SearchString, "", new { placeholder="n:fileName t:fileType"})
         <input type="submit" value="Search" />
     </div>
 

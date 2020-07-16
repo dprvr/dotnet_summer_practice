@@ -2,6 +2,7 @@
 using System.Linq;
 using FilesStorage.BLL.Interfaces;
 using FilesStorage.Entities.DTOs;
+using FilesStorage.Entities.Enums;
 
 namespace FilesStorage.BLL
 {
@@ -26,7 +27,7 @@ namespace FilesStorage.BLL
                     SetLinkedProperties(command, value);
                 }
             }
-            catch(Exception ex)
+            catch
             {
                 throw new ArgumentException("The search string format is incorrect"); 
             }            
@@ -40,8 +41,11 @@ namespace FilesStorage.BLL
                         dto.FileName = _value;
                         break;
                     case "t":
-                        dto.FileType = _value;
-                        break;
+                        {
+                            if (Enum.TryParse(_value, out FileType fileType))
+                                dto.FileType = fileType;
+                            break;
+                        }                        
                     case "#":
                         dto.TagsNames.Append(_value);
                         break;
