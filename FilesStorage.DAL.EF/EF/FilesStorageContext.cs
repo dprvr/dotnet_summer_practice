@@ -16,7 +16,6 @@ namespace FilesStorage.DAL.EF
         public DbSet<Storage> Storages { get; set; }
         public DbSet<StorageTag> Tags { get; set; }
         public DbSet<StorageFile> Files { get; set; }
-        //public DbSet<FileAndTag> FilesAndTags { get; set; }
 
         public FilesStorageContext() : base("FilesStorageDb")
         {
@@ -25,15 +24,12 @@ namespace FilesStorage.DAL.EF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
-
             modelBuilder.Configurations
                 .Add(new AccountConfig())
                 .Add(new UserConfig())
                 .Add(new StorageTagConfig())
                 .Add(new StorageFileConfig())
-                .Add(new StorageConfig());
-                //.Add(new FilesAndTagsConfig());            
+                .Add(new StorageConfig());     
         }
     }
 }

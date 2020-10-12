@@ -1,10 +1,13 @@
-﻿using Autofac;
+﻿using System.Reflection;
+
+using Autofac;
+using Autofac.Integration.Mvc;
 
 using FilesStorage.Entities.Mappers;
 
 namespace FilesStorage.DI.Modules
 {
-    public class PLModule : Module
+    public class PLModule : Autofac.Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -12,6 +15,8 @@ namespace FilesStorage.DI.Modules
                 .RegisterInstance(MappersFactory.CreateDtosAndViewModelsMapper())
                 .As<IPLMapper>()
                 .SingleInstance();
+
+            builder.RegisterControllers(Assembly.Load("FilesStorage.PL.Web"));
         }
     }
 }

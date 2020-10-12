@@ -23,8 +23,7 @@ namespace FilesStorage.DI
                 .RegisterModule(new DLModule())
                 .RegisterModule(new BLModule())
                 .RegisterModule(new PLModule());
-
-            builder.RegisterControllers(Assembly.Load("FilesStorage.PL.Web"));
+            
             _container = builder.Build();
         }
 

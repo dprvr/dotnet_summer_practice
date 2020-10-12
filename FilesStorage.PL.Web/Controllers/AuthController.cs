@@ -16,9 +16,6 @@ namespace FilesStorage.PL.Web.Controllers
         private const string defaultController = "MyFiles";
         private const string defaultAction = "Index";
 
-
-        public AuthController() { }
-
         public AuthController(IUsersLogic usersLogic, IPLMapper mapper)
         {
             _usersLogic = usersLogic;
